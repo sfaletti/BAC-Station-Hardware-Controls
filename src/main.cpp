@@ -7,19 +7,27 @@ Encoder encoder2(9, 10);
 int encVal1 = 0;
 int encVal2 = 0;
 
-const int button1 = 2;
-const int button2 = 3;
+// Set up more buttons than needed at moment, just in case things on the hardware side change. Physical buttons are connected to pins 0-6 on the Teensy 3.2
+#define BUTTON_COUNT 6
+Bounce *buttons[BUTTON_COUNT];
 
-Bounce bounce1 = Bounce();
-Bounce bounce2 = Bounce();
+const int KEY_MAP[BUTTON_COUNT] = {
+    KEY_C, // p1 b1
+    KEY_V, // p1 b2
+    KEY_N, // p2 b1
+    KEY_M, // p2 b2
+    KEY_S, // p1 start
+    KEY_P, // p2 start
+};
 
 void setup()
 {
-  bounce1.attach(button1, INPUT_PULLUP);
-  bounce2.attach(button2, INPUT_PULLUP);
-
-  bounce1.interval(5);
-  bounce2.interval(5);
+  for (int i = 0; i < BUTTON_COUNT; i++)
+  {
+    buttons[i] = new Bounce();
+    buttons[i]->attach(i, INPUT_PULLUP);
+    buttons[i]->interval(5);
+  }
 }
 
 void loop()
@@ -50,27 +58,18 @@ void loop()
     Keyboard.release(KEY_RIGHT_ARROW);
   }
 
-  bounce1.update();
-
-  switch (bounce1.read())
+  for (int i = 0; i < BUTTON_COUNT; i++)
   {
-  case LOW:
-    Keyboard.press(KEY_C);
-    break;
-  case HIGH:
-    Keyboard.release(KEY_C);
-    break;
-  }
+    buttons[i]->update();
 
-  bounce2.update();
-
-  switch (bounce2.read())
-  {
-  case LOW:
-    Keyboard.press(KEY_V);
-    break;
-  case HIGH:
-    Keyboard.release(KEY_V);
-    break;
+    switch (buttons[i]->read())
+    {
+    case LOW:
+      Keyboard.press(KEY_MAP[i]);
+      break;
+    case HIGH:
+      Keyboard.release(KEY_MAP[i]);
+      break;
+    }
   }
 }
