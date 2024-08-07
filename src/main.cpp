@@ -69,13 +69,19 @@ void loop()
     int mapIndex = i * 2;
     if (encoderValues[i] < 0)
     {
-      Keyboard.press(ENCODER_MAP[mapIndex]);
-      Keyboard.release(ENCODER_MAP[mapIndex]);
+      for (int j = 0; j < abs(encoderValues[i]); j++)
+      {
+        Keyboard.press(ENCODER_MAP[mapIndex]);
+        Keyboard.release(ENCODER_MAP[mapIndex]);
+      }
     }
     else if (encoderValues[i] > 0)
     {
-      Keyboard.press(ENCODER_MAP[mapIndex + 1]);
-      Keyboard.release(ENCODER_MAP[mapIndex + 1]);
+      for (int j = 0; j < encoderValues[i]; j++)
+      {
+        Keyboard.press(ENCODER_MAP[mapIndex + 1]);
+        Keyboard.release(ENCODER_MAP[mapIndex + 1]);
+      }
     }
   }
 
