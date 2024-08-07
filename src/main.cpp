@@ -49,6 +49,10 @@ void setup()
   }
 
   Keyboard.begin();
+
+  // Turn on the built-in LED
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop()
