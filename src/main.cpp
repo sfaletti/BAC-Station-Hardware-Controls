@@ -12,7 +12,7 @@ const int KEY_MAP[BUTTON_COUNT] = {
     KEY_V, // p1 b2
     KEY_N, // p2 b1
     KEY_M, // p2 b2
-    KEY_S, // p1 start
+    KEY_O, // p1 start
     KEY_P, // p2 start
 };
 
