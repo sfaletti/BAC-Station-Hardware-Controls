@@ -1,7 +1,8 @@
 #include <Arduino.h>
-#include <Encoder.h>
 #include <Bounce2.h>
 
+#define ENCODER_OPTIMIZE_INTERRUPTS
+#include <Encoder.h>
 // Set up more buttons than needed at moment, just in case things on the hardware side change. Physical buttons are connected to pins 0-6 on the Teensy 3.2
 #define BUTTON_COUNT 6
 #define FIRST_BUTTON_PIN 0
@@ -47,8 +48,8 @@ void setup()
     encoders[i] = new Encoder(index, index + 1);
     encoderValues[i] = 0;
   }
-
   Keyboard.begin();
+  Mouse.begin();
 
   // Turn on the built-in LED
   pinMode(LED_BUILTIN, OUTPUT);
@@ -64,29 +65,24 @@ void loop()
     encoderValues[i] = encoders[i]->readAndReset();
   }
 
+  // Send movements over mouse protocol
+  Mouse.move(encoderValues[0], encoderValues[1]);
+
+  // Send a keypress each time the encoder is moved, regardless of how far it is moved between reads. This is probably not very useful
   for (int i = 0; i < ENCODER_COUNT; i++)
   {
     int mapIndex = i * 2;
     if (encoderValues[i] < 0)
     {
-      for (int j = 0; j < abs(encoderValues[i]); j++)
-      {
-        Keyboard.press(ENCODER_MAP[mapIndex]);
-        Keyboard.release(ENCODER_MAP[mapIndex]);
-      }
+      Keyboard.press(ENCODER_MAP[mapIndex]);
+      Keyboard.release(ENCODER_MAP[mapIndex]);
     }
     else if (encoderValues[i] > 0)
     {
-      for (int j = 0; j < encoderValues[i]; j++)
-      {
-        Keyboard.press(ENCODER_MAP[mapIndex + 1]);
-        Keyboard.release(ENCODER_MAP[mapIndex + 1]);
-      }
+      Keyboard.press(ENCODER_MAP[mapIndex + 1]);
+      Keyboard.release(ENCODER_MAP[mapIndex + 1]);
     }
   }
-
-  // Move mouse
-  // Mouse.move(encoderValues[0], encoderValues[1]);
 
   // Read button values
   for (int i = 0; i < BUTTON_COUNT; i++)
@@ -103,4 +99,7 @@ void loop()
       break;
     }
   }
+
+  // Delay to prevent overloading the USB connection
+  delay(5);
 }
