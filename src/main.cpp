@@ -4,7 +4,7 @@
 #define ENCODER_OPTIMIZE_INTERRUPTS
 #include <Encoder.h>
 // Set up more buttons than needed at moment, just in case things on the hardware side change. Physical buttons are connected to pins 0-6 on the Teensy 3.2
-#define BUTTON_COUNT 6
+#define BUTTON_COUNT 10
 #define FIRST_BUTTON_PIN 0
 Bounce *buttons[BUTTON_COUNT];
 
@@ -13,13 +13,17 @@ const int KEY_MAP[BUTTON_COUNT] = {
     KEY_V, // p1 b2
     KEY_N, // p2 b1
     KEY_M, // p2 b2
+    KEY_B, // p3 b1
+    KEY_G, // p3 b2
+    KEY_H, // p4 b1
+    KEY_J, // p4 b2
     KEY_O, // p1 start
     KEY_P, // p2 start
 };
 
-// Set up encoders. Physical encoders are connected to pins 9-12 on the Teensy 3.2
+// Set up encoders. Physical encoders are connected to pins 14-21 on the Teensy 3.2
 #define ENCODER_COUNT 2
-#define FIRST_ENCODER_PIN 9
+#define FIRST_ENCODER_PIN 14
 Encoder *encoders[ENCODER_COUNT];
 int32_t encoderValues[ENCODER_COUNT];
 
