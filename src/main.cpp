@@ -3,7 +3,7 @@
 
 #define ENCODER_OPTIMIZE_INTERRUPTS
 #include <Encoder.h>
-// Set up more buttons than needed at moment, just in case things on the hardware side change. Physical buttons are connected to pins 0-6 on the Teensy 3.2
+// Set up more buttons than needed at moment, just in case things on the hardware side change. Physical buttons are connected to pins 0-9 on the Teensy 3.2
 #define BUTTON_COUNT 10
 #define FIRST_BUTTON_PIN 0
 Bounce *buttons[BUTTON_COUNT];
